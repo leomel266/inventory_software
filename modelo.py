@@ -13,10 +13,7 @@ from ast import arg
 
 
 ruta = os.path.dirname(os.path.abspath(__file__))+"\\log.txt"
-class Errorcon:
-    def errorconectar():
-        log = open(ruta, 'a')
-        print("Error al conectarse con la base de datos", file=log)
+
 
 
 
@@ -28,13 +25,6 @@ class Crud:
         class Meta:
             database = db
 
-    # def decora_alta (funcion):
-    #         def envoltura(*arg, **kargs):
-    #             print(arg[1].get(), arg[2].get())
-    #             print(arg[1].get(), type(arg[2].get()))
-    #             return funcion (*arg, **kargs)
-            
-    #         return envoltura
     def actualizar_treeview(self, tabla):
         filas = tabla.get_children()
         for items in filas:
@@ -61,7 +51,7 @@ class Crud:
         self.actualizar_treeview(tabla)
         print("Registro ingresado")
         return f"""
-Alta: {str(producto)}, {str(variables)}, {str(tabla)}"""
+Alta: {(lista[0])}, {(lista[1])}, Categoria {(lista[2])}, Unidad {(lista[3])}, Ubicacion {(lista[4])}"""
 
         
 
@@ -73,9 +63,10 @@ Alta: {str(producto)}, {str(variables)}, {str(tabla)}"""
         borrar = Productos.get(Productos.id == datos)
         borrar.delete_instance()
         self.actualizar_treeview(tabla)
+        nombre=(valor_id["values"])
         print("Registro borrado")
         return f"""
-Baja: {item_seleccionado}, {tabla}"""
+Baja: {nombre}"""
      
         
     @logger.logging
@@ -98,7 +89,7 @@ Baja: {item_seleccionado}, {tabla}"""
         self.actualizar_treeview(tabla)
         print("Registro modificado")
         return f"""
-Modificación: {item_seleccionado}, {variables}, {tabla}"""
+Modificación: {(lista[0])}, {(lista[1])}, Categoria {(lista[2])}, Unidad {(lista[3])}, Ubicacion {(lista[4])}"""
         
 
     def consulta(self, id, categoria, tabla):

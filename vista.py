@@ -9,7 +9,7 @@ from main import Classregex, Classcrud
 import os
 
 
-ruta = os.path.dirname(os.path.abspath(__file__))+"\\log.txt"
+ruta = os.path.dirname(os.path.abspath(__file__))+"\\logging.txt"
 class Errorlog:
     def registroerror():
         log = open(ruta, 'a')
@@ -200,11 +200,14 @@ class Ventana:
                         messagebox.showinfo("Productos", "Producto registrado con éxito")
         else:
             Errorlog.regexerroralta()
+        self.limpiar()
 
     def baja_v(self):
             self.obj_crud.baja(self.tabla)
+            self.limpiar()
                     
             messagebox.showinfo("Productos", "Producto eliminado con éxito")
+        
         
 
 
@@ -219,6 +222,8 @@ class Ventana:
         variables = [self.nombre_e2, self.categoria_e3, self.cantidad_e4, self.unidad_e5, self.ubicacion_e6]
         self.obj_crud.modificar(variables, self.tabla)
         messagebox.showinfo("Productos", "Producto modificado con éxito")
+        self.limpiar()
+        
 
     def limpiar(self):
         self.e1.delete(0,END)

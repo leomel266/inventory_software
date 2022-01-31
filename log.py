@@ -21,7 +21,6 @@ class LoggingManager():
                 self.logger.info(f"El método {func.__name__} retorna: {resultado}")
             else:
                 self.logger.info(f"El método {func.__name__} no retorna nada.")
-            self.logger.info(f"Argumentos del método: {args[::-1][0:-1][::-1]}")
             self.logger.info(f"Terminó la ejecución: {func.__name__}")
         return wrap
 
