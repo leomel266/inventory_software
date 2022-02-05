@@ -1,5 +1,4 @@
 import logging
-from textwrap import wrap
 from tkinter import W
 
 class LoggingManager():

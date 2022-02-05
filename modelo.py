@@ -1,4 +1,4 @@
-
+import imp
 from logging import info
 from tkinter import *
 import os
@@ -9,22 +9,35 @@ from log import logger
 from enum import unique
 from datetime import datetime
 from ast import arg
+from tkinter import messagebox
+
+class Tema:
+
+    observadores = []
+
+    def agregar(self, obj):
+        self.observadores.append(obj)
+        
+
+    def notificar(self, titulo, mensaje):
+        for observador in self.observadores:
+            observador.update(titulo, mensaje)    
+
+class Observador:
+    def __init__(self, obj):
+        self.observado_a = obj
+        self.observado_a.agregar(self)
+        self.observado_a.notificar
+        
+
+    def update(self, titulo, mensaje):
+        messagebox.showinfo(titulo, mensaje)
+        
+        
 
 
 
-ruta = os.path.dirname(os.path.abspath(__file__))+"\\log.txt"
-
-
-
-
-class Crud:
-    def __init__(self):
-        db = SqliteDatabase('mibase.db')
-
-    class BaseModel(Model):
-        class Meta:
-            database = db
-
+class Crud(Tema):
     def actualizar_treeview(self, tabla):
         filas = tabla.get_children()
         for items in filas:
@@ -34,7 +47,6 @@ class Crud:
         for fila in datos:
             tabla.insert("",'end', text=(fila.id), values = (fila.id, fila.producto, fila.categoria, fila.cantidad, fila.unidad, fila.ubicacion))
     @logger.logging
-    
     def alta(self, variables, tabla):
         
         lista = []
@@ -48,10 +60,11 @@ class Crud:
         producto.unidad = lista[3]
         producto.ubicacion = lista[4]
         producto.save()
+        self.notificar("Productos", "Producto registrado con éxito")
         self.actualizar_treeview(tabla)
         print("Registro ingresado")
         return f"""
-Alta: {(lista[0])}, {(lista[1])}, Categoria {(lista[2])}, Unidad {(lista[3])}, Ubicacion {(lista[4])}"""
+Alta: {lista[0]}, {lista[1]}, Cantidad: {lista[2]}, Unidad: {lista[3]}, Ubicación: {lista[4]}"""
 
         
 
@@ -62,8 +75,9 @@ Alta: {(lista[0])}, {(lista[1])}, Categoria {(lista[2])}, Unidad {(lista[3])}, U
         datos = (valor_id["text"],)
         borrar = Productos.get(Productos.id == datos)
         borrar.delete_instance()
+        self.notificar("Productos", "Producto eliminado con éxito")
         self.actualizar_treeview(tabla)
-        nombre=(valor_id["values"])
+        nombre = (valor_id["values"])
         print("Registro borrado")
         return f"""
 Baja: {nombre}"""
@@ -87,9 +101,10 @@ Baja: {nombre}"""
         mod.execute() 
         print(valor["values"])   
         self.actualizar_treeview(tabla)
+        self.notificar("Productos", "Producto modificado con éxito")
         print("Registro modificado")
         return f"""
-Modificación: {(lista[0])}, {(lista[1])}, Categoria {(lista[2])}, Unidad {(lista[3])}, Ubicacion {(lista[4])}"""
+Modificación: {lista[0]}, {lista[1]}, Cantidad: {lista[2]}, Unidad: {lista[3]}, Ubicación: {lista[4]}"""
         
 
     def consulta(self, id, categoria, tabla):
@@ -97,7 +112,8 @@ Modificación: {(lista[0])}, {(lista[1])}, Categoria {(lista[2])}, Unidad {(list
         for fila in datos:
             tabla.insert("",'end', text=(fila.id), values = (fila.id, fila.producto, fila.categoria, fila.cantidad, fila.unidad, fila.ubicacion))
   
-        
+ob_crud = Crud()        
+observador_a = Observador(ob_crud)        
 
 
     
